@@ -1,0 +1,82 @@
+<head>
+  <!-- based on https://bl.ocks.org/andrewthornton/eb8d67a9820fbd36d1cb -->
+  <meta charset="utf-8">
+  <script src="./js/d3.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    path {
+      fill: none;
+      stroke: teal;
+    }
+
+    .axis path,
+    line {
+      stroke: #aaa;
+      shape-rendering: crispEdges;
+    }
+
+    .axis text {
+      fill: #aaa;
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    var margin = { top: 50, right: 50, bottom: 50, left: 50 }
+    var width = window.innerWidth - margin.left - margin.right
+    var height = window.innerHeight - margin.top - margin.bottom
+
+    console.log(`widith is ${width} and height is ${height}`)
+
+    var data = [-200, -150, -100, -50, 0, 50, 100, 150, 200];
+    var svg = d3.select("body")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    var xscale = d3.scaleLinear()
+      .domain([-12, 12])
+      .range([0, width]);
+
+    var yscale = d3.scaleLinear()
+      .domain([-200, 200])
+      .range([height, 0]);
+
+    var x_axis = d3.axisBottom()
+      .scale(xscale).tickSize(0);
+
+    var y_axis = d3.axisLeft()
+      .scale(yscale).tickSize(0);
+
+    let yxform = width / 2;
+    console.log(`yxform is ${yxform}`)
+
+    svg.append("g")
+      .attr("transform", "translate(840,50)")
+      .call(y_axis);
+
+    var xXform = height / 2;
+    console.log(`yxform is ${xXform}`)
+
+
+    svg.append("g")
+      .attr("transform", "translate(50,465)")
+      .call(x_axis)
+
+  </script>
+</body>
