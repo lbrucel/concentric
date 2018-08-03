@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<head>
+  <!-- based on https://bl.ocks.org/andrewthornton/eb8d67a9820fbd36d1cb -->
+  <meta charset="utf-8">
+  <script src="./js/d3.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    path {
+      fill: none;
+      stroke: teal;
+    }
+
+    .axis path,
+    line {
+      stroke: #aaa;
+      shape-rendering: crispEdges;
+    }
+
+    .axis text {
+      fill: #aaa;
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    var margin = { top: 50, right: 50, bottom: 50, left: 50 };
+    var width = window.innerWidth - margin.left - margin.right;
+    var height = window.innerHeight - margin.top - margin.bottom;
+    var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var fn = function (x) {
+      return Math.pow(x, 2);
+    };
+
+    //set the range of the x axis
+    var x = d3.scaleLinear()
+      .range([0, width]);
+
+    //set the range of the y axis
+    var y = d3.scaleLinear()
+      .range([height, 0]);
+
+    var xAxis = d3.axisBottom()
+      .scale(x);
+
+    var yAxis = d3.axisLeft()
+      .scale(y);
+
+    var line = d3.line()
+      .curve(d3.curveBasis)
+      .x(function (d) { return x(d.x); })
+      .y(function (d) { return y(d.y); });
+
+    var data = d3.range(-10, 11).map(function (d) {
+      return { x: d, y: fn(d) };
+    });
+
+    x.domain(d3.extent(data, function (d) { return d.x; }));
+    y.domain([0, d3.max(data, function (d) { return d.y; })]);
+
+    svg.append('g')
+      .attr('class', 'axis')
+      .attr('transform', 'translate(0,' + height + ')')
+      .call(xAxis);
+
+    svg.append('g')
+      .attr('class', 'axis')
+      .attr('transform', 'translate(' + width / 2 + ',0)')
+      .call(yAxis);
+
+
+    svg.append('path')
+      .datum(data)
+      .attr('d', line);
+
+  </script>
+</body>
