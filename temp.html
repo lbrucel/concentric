@@ -41,7 +41,7 @@
     var width = window.innerWidth - margin.left - margin.right
     var height = window.innerHeight - margin.top - margin.bottom
 
-    console.log(`widith is ${width} and height is ${height}`)
+    console.log(`width is ${width} and height is ${height}`)
 
     var data = [-200, -150, -100, -50, 0, 50, 100, 150, 200];
     var svg = d3.select("body")
@@ -63,19 +63,19 @@
     var y_axis = d3.axisLeft()
       .scale(yscale).tickSize(0);
 
-    let yxform = width / 2;
-    console.log(`yxform is ${yxform}`)
+    let yXform = width / 2 + 50;
+    console.log(`yxform is ${yXform}`)
 
     svg.append("g")
-      .attr("transform", "translate(840,50)")
+      .attr("transform", `translate(${yXform},50)`)
       .call(y_axis);
 
-    var xXform = height / 2;
+    var xXform = height / 2 + 50;
     console.log(`yxform is ${xXform}`)
 
 
     svg.append("g")
-      .attr("transform", "translate(50,465)")
+      .attr("transform", `translate(50,${xXform})`)
       .call(x_axis)
 
   </script>

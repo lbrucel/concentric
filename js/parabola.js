@@ -10,15 +10,24 @@ var svg = d3
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
 //define the function being graphed
-var fn = function(x) {
-  return Math.pow(x, 2)
+var fn = function(x, h, m, s) {
+  let y = h * Math.pow(x, 2)
+  y += m * x
+  y += s
+  return y
 }
 
 //set the range of the x axis
-var x = d3.scaleLinear().range([0, width])
+var x = d3
+  .scaleLinear()
+  .domain([-12, 12])
+  .range([0, width])
 
 //set the range of the y axis
-var y = d3.scaleLinear().range([height, 0])
+var y = d3
+  .scaleLinear()
+  .domain([-200, 200])
+  .range([height, 0])
 
 var xAxis = d3.axisBottom().scale(x)
 
@@ -34,34 +43,40 @@ var line = d3
     return y(d.y)
   })
 
-var data = d3.range(-12, 13).map(function(d) {
-  return { x: d, y: fn(d) }
+var data = d3.range(-12, 12).map(function(x) {
+  return { x: x, y: fn(x, 12, 0, 0) }
 })
 
-x.domain(
-  d3.extent(data, function(d) {
-    return d.x
-  })
-)
-y.domain([
-  d3.min(data, function(d) {
-    return d.y
-  }),
-  d3.max(data, function(d) {
-    return d.y
-  }),
-])
+// x.domain(
+//   d3.extent(data, function(d) {
+//     return d.x
+//   })
+// )
+// y.domain([
+//   d3.min(data, function(d) {
+//     return d.y
+//   }),
+//   d3.max(data, function(d) {
+//     return d.y
+//   }),
+// ])
+
+let yTranslate = width / 2
+console.log(`yTranslate is ${yTranslate}`)
+
+var xTranslate = height / 2
+console.log(`xTranslate is ${xTranslate}`)
 
 svg
   .append('g')
   .attr('class', 'axis')
-  .attr('transform', 'translate(0,' + height / 2 + ')')
+  .attr('transform', `translate(0,${xTranslate})`)
   .call(xAxis)
 
 svg
   .append('g')
   .attr('class', 'axis')
-  .attr('transform', 'translate(' + width / 2 + ',0)')
+  .attr('transform', `translate(${yTranslate},0)`)
   .call(yAxis)
 
 console.log('data is: ', data)
