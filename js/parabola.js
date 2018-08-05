@@ -44,7 +44,7 @@ var line = d3
   })
 
 var data = d3.range(-12, 12).map(function(x) {
-  return { x: x, y: fn(x, 12, 0, 0) }
+  return { x: x, y: fn(x, -12, 59, 59) }
 })
 
 // x.domain(
