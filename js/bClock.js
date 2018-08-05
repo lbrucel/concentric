@@ -98,5 +98,6 @@ svg
   .append('text')
   .attr('x', 200)
   .attr('y', 750)
-  .attr('font-size', '30px')
+  .attr('font-size', '2vw')
+  .attr('font-family', 'sans-serif')
   .text(`${hours}:${minutes}:${seconds}`)
