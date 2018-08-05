@@ -31,7 +31,7 @@ const minR = faceR * 0.5
 const secR = faceR * 0.25
 
 let date = new Date()
-let hours = date.getHours()
+let hours = date.getHours() % 12
 let minutes = date.getMinutes()
 let seconds = date.getSeconds()
 
@@ -47,21 +47,15 @@ svg
   .attr('r', faceR)
 
 //hour circle
-hours = 12
-minutes = 0
-seconds = 20
-console.log(`clock face r: ${faceR}, cx: ${center[0]}, cy: ${center[1]}`)
 let hCenter = xyFromBase12(hours, faceR - hourR)
-console.log(`hour ${hours} r: ${hourR}, cx: ${hCenter[0]}, cy: ${hCenter[1]}`)
 center[0] += hCenter[0]
 center[1] += hCenter[1]
-console.log(`hour ${hours} r: ${hourR}, cx: ${center[0]}, cy: ${center[1]}`)
 
 svg
   .append('circle')
   .style('fill', 'none')
-  .style('stroke', 'blue')
-  .style('stroke-width', 4)
+  .style('stroke', 'black')
+  .style('stroke-width', 10)
   .attr('cx', center[0])
   .attr('cy', center[1])
   .attr('r', hourR)
@@ -74,8 +68,8 @@ center[1] += mCenter[1]
 svg
   .append('circle')
   .style('fill', 'none')
-  .style('stroke', 'red')
-  .style('stroke-width', 2)
+  .style('stroke', 'black')
+  .style('stroke-width', 5)
   .attr('cx', center[0])
   .attr('cy', center[1])
   .attr('r', minR)
@@ -87,17 +81,25 @@ center[1] += sCenter[1]
 svg
   .append('circle')
   .style('fill', 'none')
-  .style('stroke', 'green')
-  .style('stroke-width', 1)
+  .style('stroke', 'black')
+  .style('stroke-width', 2)
   .attr('cx', center[0])
   .attr('cy', center[1])
   .attr('r', secR)
 
 //add the time in text
+function addZeroBefore(time) {
+  return (time < 10 ? '0' : '') + time
+}
+hours = addZeroBefore(hours)
+minutes = addZeroBefore(minutes)
+seconds = addZeroBefore(seconds)
+
 svg
   .append('text')
-  .attr('x', 200)
-  .attr('y', 750)
+  .attr('x', 20)
+  .attr('y', height - 20)
   .attr('font-size', '2vw')
   .attr('font-family', 'sans-serif')
+  .style('fill', 'white')
   .text(`${hours}:${minutes}:${seconds}`)

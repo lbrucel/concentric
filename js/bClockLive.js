@@ -88,10 +88,28 @@ svg
   .attr('r', secR)
 
 //add the time in text
+function addZeroBefore(time) {
+  return (time < 10 ? '0' : '') + time
+}
+hours = addZeroBefore(hours)
+minutes = addZeroBefore(minutes)
+seconds = addZeroBefore(seconds)
+
 svg
   .append('text')
-  .attr('x', 200)
-  .attr('y', 750)
+  .attr('x', 20)
+  .attr('y', height - 20)
   .attr('font-size', '2vw')
   .attr('font-family', 'sans-serif')
+  .style('fill', 'white')
   .text(`${hours}:${minutes}:${seconds}`)
+
+// function updateTime() {
+//   let circle = svg.select('circle');function repeat() {
+//     now = new Date()
+//     circle = circle
+//     .transition()
+//     .duration(750)
+//     .attr(cx, )
+//   }
+// }
