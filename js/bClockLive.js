@@ -149,21 +149,16 @@ let label = field
   label.text(function(d) {
     return d.value + d.label
   })
+  hours = now.getHours() % 12
+  minutes = now.getMinutes()
   seconds = now.getSeconds()
 
   sCenter = xyFromBase60(seconds, minR - secR)
   sCenter[0] += center[0]
   sCenter[1] += center[1]
-  // console.log('seconds', seconds)
-  // console.log(sCenter)
-  // console.log(
-  //   `${xyFromBase60(seconds, minR - secR)[0]},${
-  //     xyFromBase60(seconds, minR - secR)[1]
-  //   }`
-  // )
   cSeconds
-    .transition(d3.easeElastic)
-    .duration(750)
+    .transition(d3.easeLinear)
+    .duration(900)
     .attr('cx', sCenter[0])
     .attr('cy', sCenter[1])
 
