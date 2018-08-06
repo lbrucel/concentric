@@ -8,7 +8,7 @@ var fields = [
     size: 24,
     label: ':',
     update: function(date) {
-      return addZeroBefore(date.getHours())
+      return addZeroBefore(date.getHours() % 12)
     },
   },
   {
