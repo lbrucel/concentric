@@ -2,6 +2,38 @@ var margin = { top: 20, right: 20, bottom: 20, left: 20 }
 var width = window.innerWidth - margin.left - margin.right
 var height = window.innerHeight - margin.top - margin.bottom
 
+var fields = [
+  {
+    value: 24,
+    size: 24,
+    label: ':',
+    update: function(date) {
+      return addZeroBefore(date.getHours())
+    },
+  },
+  {
+    value: 60,
+    size: 60,
+    label: ':',
+    update: function(date) {
+      return addZeroBefore(date.getMinutes())
+    },
+  },
+  {
+    value: 60,
+    size: 60,
+    label: '',
+    update: function(date) {
+      return addZeroBefore(date.getSeconds())
+    },
+  },
+]
+
+//add the time in text
+function addZeroBefore(time) {
+  return (time < 10 ? '0' : '') + time
+}
+
 //given minutes or seconds and radius, return X,Y
 xyFromBase60 = function(baseTime, radius) {
   let radians = (baseTime * 360) / 60
@@ -51,7 +83,7 @@ let hCenter = xyFromBase12(hours, faceR - hourR)
 center[0] += hCenter[0]
 center[1] += hCenter[1]
 
-svg
+let cHours = svg
   .append('circle')
   .style('fill', 'none')
   .style('stroke', 'black')
@@ -65,7 +97,7 @@ svg
 let mCenter = xyFromBase60(minutes, hourR - minR)
 center[0] += mCenter[0]
 center[1] += mCenter[1]
-svg
+let cMinutes = svg
   .append('circle')
   .style('fill', 'none')
   .style('stroke', 'black')
@@ -78,7 +110,7 @@ svg
 sCenter = xyFromBase60(seconds, minR - secR)
 center[0] += sCenter[0]
 center[1] += sCenter[1]
-svg
+let cSeconds = svg
   .append('circle')
   .style('fill', 'none')
   .style('stroke', 'black')
@@ -87,29 +119,33 @@ svg
   .attr('cy', center[1])
   .attr('r', secR)
 
-//add the time in text
-function addZeroBefore(time) {
-  return (time < 10 ? '0' : '') + time
-}
-hours = addZeroBefore(hours)
-minutes = addZeroBefore(minutes)
-seconds = addZeroBefore(seconds)
+let field = svg
+  .selectAll('.field')
+  .data(fields)
+  .enter()
+  .append('g')
+  .attr('transform', function(d, i) {
+    return 'translate(' + (i * 60 + 40) + ',' + 0 + ')'
+  })
+  .attr('class', 'field')
 
-svg
+let label = field
   .append('text')
   .attr('x', 20)
   .attr('y', height - 20)
   .attr('font-size', '40px')
   .attr('font-family', 'sans-serif')
   .style('fill', 'white')
-  .text(`${hours}:${minutes}:${seconds}`)
+  .attr('class', 'label')
+;(function updateTime() {
+  now = new Date()
+  field.each(function(d) {
+    ;(d.previous = d.value), (d.value = d.update(now))
+  })
 
-// function updateTime() {
-//   let circle = svg.select('circle');function repeat() {
-//     now = new Date()
-//     circle = circle
-//     .transition()
-//     .duration(750)
-//     .attr(cx, )
-//   }
-// }
+  label.text(function(d) {
+    return d.value + d.label
+  })
+
+  setTimeout(updateTime, 1000 - (now % 1000))
+})()
