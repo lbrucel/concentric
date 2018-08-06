@@ -108,16 +108,18 @@ let cMinutes = svg
 
 //seconds circle
 sCenter = xyFromBase60(seconds, minR - secR)
-center[0] += sCenter[0]
-center[1] += sCenter[1]
+sCenter[0] += center[0]
+sCenter[1] += center[1]
 let cSeconds = svg
   .append('circle')
   .style('fill', 'none')
   .style('stroke', 'black')
   .style('stroke-width', 2)
-  .attr('cx', center[0])
-  .attr('cy', center[1])
+  .attr('cx', sCenter[0])
+  .attr('cy', sCenter[1])
   .attr('r', secR)
+
+// console.log(`initial seconds center is ${sCenter}`)
 
 let field = svg
   .selectAll('.field')
@@ -138,7 +140,8 @@ let label = field
   .style('fill', 'white')
   .attr('class', 'label')
 ;(function updateTime() {
-  now = new Date()
+  let now = new Date()
+
   field.each(function(d) {
     ;(d.previous = d.value), (d.value = d.update(now))
   })
@@ -146,6 +149,23 @@ let label = field
   label.text(function(d) {
     return d.value + d.label
   })
+  seconds = now.getSeconds()
+
+  sCenter = xyFromBase60(seconds, minR - secR)
+  sCenter[0] += center[0]
+  sCenter[1] += center[1]
+  // console.log('seconds', seconds)
+  // console.log(sCenter)
+  // console.log(
+  //   `${xyFromBase60(seconds, minR - secR)[0]},${
+  //     xyFromBase60(seconds, minR - secR)[1]
+  //   }`
+  // )
+  cSeconds
+    .transition(d3.easeElastic)
+    .duration(750)
+    .attr('cx', sCenter[0])
+    .attr('cy', sCenter[1])
 
   setTimeout(updateTime, 1000 - (now % 1000))
 })()
