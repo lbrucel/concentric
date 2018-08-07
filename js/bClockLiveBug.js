@@ -174,14 +174,14 @@ let label = field
     .attr('cx', mCenter[0])
     .attr('cy', mCenter[1])
 
-  // hCenter = xyFromBase12(hours, hRadius)
-  // hCenter[0] += mCenter[0]
-  // hCenter[1] += mCenter[1]
-  // cHours
-  //   .transition(d3.easeLinear)
-  //   .duration(900)
-  //   .attr('cx', hCenter[0])
-  //   .attr('cy', hCenter[1])
+  hCenter = xyFromBase12(hours, hRadius)
+  hCenter[0] += mCenter[0]
+  hCenter[1] += mCenter[1]
+  cHours
+    .transition(d3.easeLinear)
+    .duration(900)
+    .attr('cx', hCenter[0])
+    .attr('cy', hCenter[1])
 
   setTimeout(updateTime, 1000 - (now % 1000))
 })()

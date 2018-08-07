@@ -55,7 +55,7 @@ let svg = d3
   .attr('width', width)
   .attr('height', height)
 
-let outterRadius = (width < height ? width : height) / 2 - 20
+let outterRadius = (width < height ? width : height) / 2 - 10
 
 const faceR = outterRadius
 const hourR = faceR * 0.75
@@ -152,8 +152,8 @@ let label = field
   label.text(function(d) {
     return d.value + d.label
   })
-  hours = now.getHours() % 12
-  minutes = now.getMinutes()
+  hours = (now.getSeconds() * 24) % 12
+  minutes = now.getSeconds() * 7
   seconds = now.getSeconds()
 
   sCenter = xyFromBase60(seconds, sRadius)
